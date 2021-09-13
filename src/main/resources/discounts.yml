@@ -1,0 +1,21 @@
+discounts:
+  vip:
+
+    # permissão necessária para receber o desconto
+    permission: 'nextspawnershop.discount.vip'
+
+    # 15% de desconto
+    value: 15
+
+    # nome do grupo (apenas visual)
+    group-name: '&a[VIP]'
+
+  mvp:
+    permission: 'nextspawnershop.discount.mvp'
+    value: 20
+    group-name: '&b[MVP]'
+
+  mvp+:
+    permission: 'nextspawnershop.discount.mvp+'
+    value: 30
+    group-name: '&b[MVP&6+&b]'

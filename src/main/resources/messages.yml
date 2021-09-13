@@ -1,0 +1,8 @@
+messages:
+  staff-help:
+    - ''
+    - ' &b&lNextSpawnerShop &8➡&f Ajuda'
+    - ''
+    - ' &b&l▮ &7/spawneradmin &8-&f Mostra esta mensagem.'
+    - ' &b&l▮ &7/spawneradmin reload &8-&f Recarrega os arquivos de configurações.'
+    - ''

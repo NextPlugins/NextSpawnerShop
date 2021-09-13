@@ -1,0 +1,53 @@
+spawners:
+  spawner1:
+
+    # custo em 2 tipos de moedas
+    # deixar em 0 irá desabilitar o uso da moeda
+    cost:
+      coins: 100000
+      cash: 3000
+
+    # data em que o spawner irá ser lançado, deixe vazio para desabilitar
+    release-at: ''
+
+    # permissão para comprar este spawner, deixe vazio para desabilitar
+    permission: ''
+
+    # comandos que serão executados após a compra ser confirmada
+    commands:
+      - 'givespawner {player} ZOMBIE {amount}'
+
+    # ícone que irá aparecer na página da loja
+    icon:
+
+      # skin da cabeça, suporta tanto nicks como textura
+      head: 'MHF_PIG'
+      name: '&aGerador de Vaca'
+      lore:
+        - ''
+        - ' &fPreço: &a{coins}&f coins e &6{cash}&f cash'
+        - ' &fSeu desconto: &7{discount}'
+        - ''
+        - '&aBotão esquerdo:&7 compre &f1x&7 spawner'
+        - '&aBotão direito:&7 compre uma quantia&f personalizada'
+        - '&aBotão Q:&7 compre o máximo possível com o seu dinheiro'
+
+  spawner2:
+    cost:
+      coins: 1000000
+      cash: 7500
+    release-at: '15/09/2021 13:00'
+    permission: 'nextspawnershop.spawner.zombie'
+    commands:
+      - 'givespawner {player} ZOMBIE {amount}'
+    icon:
+      head: 'MHF_ZOMBIE'
+      name: '&aGerador de Zumbi'
+      lore:
+        - ''
+        - ' &fPreço: &a{coins}&f coins e &6{cash}&f cash'
+        - ' &fSeu desconto: &7{discount}'
+        - ''
+        - '&aBotão esquerdo:&7 compre &f1x&7 spawner'
+        - '&aBotão direito:&7 compre uma quantia&f personalizada'
+        - '&aBotão Q:&7 compre o máximo possível com o seu dinheiro'

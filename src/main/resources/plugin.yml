@@ -1,0 +1,8 @@
+name: NextSpawnerShop
+version: '${version}'
+main: br.com.nextplugins.spawnershop.NextSpawnerShop
+api-version: 1.17
+prefix: NextSpawnerShop
+authors: [ NextPlugins ]
+description: Um sistema de loja de spawners completo.
+website: https://nextplugins.com.br
