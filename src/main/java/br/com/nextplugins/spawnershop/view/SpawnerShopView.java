@@ -47,6 +47,8 @@ public final class SpawnerShopView extends PagedInventory {
         this.economyHook = economyHook;
     }
 
+    // todo: refactor this code block
+
     @Override
     protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
         final List<InventoryItemSupplier> items = new LinkedList<>();
@@ -110,6 +112,9 @@ public final class SpawnerShopView extends PagedInventory {
                             final SpawnerBuyEvent spawnerBuyEvent = new SpawnerBuyEvent(player, 1, finalCost, spawner);
 
                             pluginManager.callEvent(spawnerBuyEvent);
+                        })
+                        .callback(ClickType.RIGHT, handler -> {
+                            // todo: handle right click
                         })
                         .callback(ClickType.DROP, handler -> {
                             final double finalCost = discount == null
