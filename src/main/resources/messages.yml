@@ -1,4 +1,9 @@
 messages:
+  commands:
+    no-permission: '&cVocê não tem permissão para executar este comando.'
+    execution-error: '&cOcorreu um erro ao executar este comando.'
+    incorrect-target: '&cEste comando só está disponível para {target}'
+    incorrect-usage: '&cUso incorreto! Utilize: /{usage}'
   staff-help:
     - ''
     - ' &b&lNextSpawnerShop &8➡&f Ajuda'
