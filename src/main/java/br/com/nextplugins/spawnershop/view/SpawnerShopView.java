@@ -1,8 +1,10 @@
 package br.com.nextplugins.spawnershop.view;
 
 import br.com.nextplugins.spawnershop.api.event.SpawnerBuyEvent;
+import br.com.nextplugins.spawnershop.api.event.SpawnerCustomAmountBuyEvent;
 import br.com.nextplugins.spawnershop.api.model.discount.Discount;
 import br.com.nextplugins.spawnershop.api.model.spawner.Spawner;
+import br.com.nextplugins.spawnershop.configuration.value.MessageValue;
 import br.com.nextplugins.spawnershop.hook.EconomyHook;
 import br.com.nextplugins.spawnershop.manager.DiscountManager;
 import br.com.nextplugins.spawnershop.manager.SpawnerManager;
@@ -105,16 +107,20 @@ public final class SpawnerShopView extends PagedInventory {
 
                     inventoryItem = InventoryItem.of(icon)
                         .callback(ClickType.LEFT, handler -> {
-                            final double finalCost = discount == null
-                                ? cost
-                                : discountManager.getSpawnerPriceWithDiscount(cost, discount.getValue());
-
-                            final SpawnerBuyEvent spawnerBuyEvent = new SpawnerBuyEvent(player, 1, finalCost, spawner);
+                            final SpawnerBuyEvent spawnerBuyEvent = new SpawnerBuyEvent(player, spawner);
 
                             pluginManager.callEvent(spawnerBuyEvent);
                         })
                         .callback(ClickType.RIGHT, handler -> {
-                            // todo: handle right click
+                            player.closeInventory();
+
+                            spawnerManager.getPlayersBuyingSpawners().put(player.getUniqueId(), spawner);
+
+                            final List<String> messages = MessageValue.get(MessageValue::customAmountBuyMessage);
+
+                            for (String message : messages) {
+                                player.sendMessage(message);
+                            }
                         })
                         .callback(ClickType.DROP, handler -> {
                             final double finalCost = discount == null
@@ -125,16 +131,13 @@ public final class SpawnerShopView extends PagedInventory {
 
                             final double spawnerAmount = Math.floor(balance / finalCost);
 
-                            final double totalCost = spawnerAmount * finalCost;
-
-                            final SpawnerBuyEvent spawnerBuyEvent = new SpawnerBuyEvent(
+                            final SpawnerCustomAmountBuyEvent spawnerCustomAmountBuyEvent = new SpawnerCustomAmountBuyEvent(
                                 player,
                                 spawnerAmount,
-                                totalCost,
                                 spawner
                             );
 
-                            pluginManager.callEvent(spawnerBuyEvent);
+                            pluginManager.callEvent(spawnerCustomAmountBuyEvent);
                         });
                 } else {
                     inventoryItem = InventoryItem.of(

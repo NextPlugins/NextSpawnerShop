@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +22,8 @@ public final class SpawnerManager {
     private final NextSpawnerShop plugin;
 
     @Getter private final Map<String, Spawner> spawners = new LinkedHashMap<>();
+
+    @Getter private final Map<UUID, Spawner> playersBuyingSpawners = new LinkedHashMap<>();
 
     public void init() {
         loadSpawners(false);
@@ -55,7 +55,7 @@ public final class SpawnerManager {
                             .build()
                     )
                     .releaseDate(
-                        spawnersSection.getString(key + ".release-at").isEmpty()
+                        Objects.requireNonNull(spawnersSection.getString(key + ".release-at")).isEmpty()
                             ? null
                             : DateParser.parse(spawnersSection.getString(key + ".release-at"))
                     )

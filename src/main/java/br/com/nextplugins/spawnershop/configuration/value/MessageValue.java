@@ -29,6 +29,12 @@ public final class MessageValue {
     private final String incorrectTarget = message("messages.commands.incorrect-target");
     private final String incorrectUsage = message("messages.commands.incorrect-usage");
 
+    private final String withoutMoney = message("messages.without-money");
+    private final String spawnersBought = message("messages.spawner-bought");
+    private final List<String> customAmountBuyMessage = messageList("messages.custom-amount-buy-message");
+    private final String customAmountBuyCancelled = message("messages.custom-amount-buy-cancelled");
+    private final String onlyNumbers = message("messages.only-numbers");
+
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);
     }

@@ -22,11 +22,6 @@ public final class NextSpawnerShop extends JavaPlugin {
     private final EconomyHook economyHook = new EconomyHook(this.getLogger());
 
     @Override
-    public void onLoad() {
-        saveDefaultConfig();
-    }
-
-    @Override
     public void onEnable() {
         try {
             configurationManager.init();

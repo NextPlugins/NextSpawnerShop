@@ -8,9 +8,10 @@ import org.bukkit.event.Cancellable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class SpawnerBuyEvent extends SpawnerShopEvent implements Cancellable {
+public final class SpawnerCustomAmountBuyEvent extends SpawnerShopEvent implements Cancellable {
 
     private final Player player;
+    private final double amount;
     private final Spawner spawner;
 
     private boolean cancelled;
