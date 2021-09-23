@@ -8,8 +8,6 @@ import br.com.nextplugins.spawnershop.configuration.value.MessageValue;
 import br.com.nextplugins.spawnershop.hook.EconomyHook;
 import br.com.nextplugins.spawnershop.manager.DiscountManager;
 import br.com.nextplugins.spawnershop.manager.SpawnerManager;
-import br.com.nextplugins.spawnershop.util.ColorUtil;
-import br.com.nextplugins.spawnershop.util.NumberFormatter;
 import br.com.nextplugins.spawnershop.util.item.ItemBuilder;
 import br.com.nextplugins.spawnershop.util.item.TypeUtil;
 import br.com.nextplugins.spawnershop.util.time.TimeFormatter;
@@ -20,16 +18,13 @@ import com.henryfabio.minecraft.inventoryapi.viewer.configuration.border.Border;
 import com.henryfabio.minecraft.inventoryapi.viewer.configuration.impl.ViewerConfigurationImpl;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public final class SpawnerShopView extends PagedInventory {
 
@@ -64,8 +59,6 @@ public final class SpawnerShopView extends PagedInventory {
 
     @Override
     protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
-        // todo: refactor this code block
-
         final List<InventoryItemSupplier> items = new LinkedList<>();
 
         final Player player = viewer.getPlayer();
@@ -75,57 +68,12 @@ public final class SpawnerShopView extends PagedInventory {
                 InventoryItem inventoryItem;
 
                 if (spawner.isReleased()) {
-                    final ItemStack spawnerIcon = spawner.getData().getIcon().clone();
-
                     final Discount discount = discountManager.getPlayerDiscount(player).orElse(null);
 
                     final double cost = spawner.getData().getCost();
                     final double cashCost = spawner.getData().getCashCost();
 
-                    final ItemStack icon = new ItemBuilder(spawnerIcon)
-                        .acceptItemMeta(meta -> {
-                            final List<String> lore = meta.getLore();
-
-                            if (lore == null) return;
-
-                            final String formattedPrice = NumberFormatter.letterFormat(cost);
-
-                            String coinsPrice = discount == null
-                                ? formattedPrice
-                                : ColorUtil.colored("&c&m" + formattedPrice + "&r" + "&a " + NumberFormatter.letterFormat(
-                                discountManager.getSpawnerPriceWithDiscount(cost, discount.getValue())
-                            ));
-
-                            if (cost == 0) coinsPrice = "";
-
-                            final String formattedCashPrice = NumberFormatter.letterFormat(cashCost);
-
-                            String cashPrice = discount == null
-                                ? formattedCashPrice
-                                : ColorUtil.colored("&c&m" + formattedCashPrice + "&r" + "&6 " + NumberFormatter.letterFormat(
-                                discountManager.getSpawnerPriceWithDiscount(cashCost, discount.getValue())
-                            ));
-
-                            if (cashCost == 0) cashPrice = "";
-
-                            final String discountLine = discount == null
-                                ? ChatColor.RED + "Você não possui nenhum desconto."
-                                : NumberFormatter.decimalFormat(discount.getValue()) + "% - " + ColorUtil.colored(discount.getGroupName());
-
-                            final String finalCoinsPrice = coinsPrice;
-                            final String finalCashPrice = cashPrice;
-
-                            final List<String> replacedLore = lore.stream()
-                                .map(s -> s.replace("{coins}", finalCoinsPrice))
-                                .map(s -> s.replace("{cash}", finalCashPrice))
-                                .map(s -> s.replace("{discount}", discountLine))
-                                .collect(Collectors.toList());
-
-                            meta.setLore(replacedLore);
-                        })
-                        .build();
-
-                    inventoryItem = InventoryItem.of(icon)
+                    inventoryItem = InventoryItem.of(spawner.getData().toItemStack(discount, discountManager))
                         .callback(ClickType.LEFT, handler -> {
                             final SpawnerBuyEvent spawnerBuyEvent = new SpawnerBuyEvent(player, spawner);
 
