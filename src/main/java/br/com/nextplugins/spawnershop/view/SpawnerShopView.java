@@ -16,6 +16,8 @@ import br.com.nextplugins.spawnershop.util.time.TimeFormatter;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.paged.PagedInventory;
 import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
 import com.henryfabio.minecraft.inventoryapi.item.supplier.InventoryItemSupplier;
+import com.henryfabio.minecraft.inventoryapi.viewer.configuration.border.Border;
+import com.henryfabio.minecraft.inventoryapi.viewer.configuration.impl.ViewerConfigurationImpl;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,15 +46,26 @@ public final class SpawnerShopView extends PagedInventory {
             6 * 9
         );
 
+        configuration(configuration -> configuration.secondUpdate(1));
+
         this.spawnerManager = spawnerManager;
         this.discountManager = discountManager;
         this.economyHook = economyHook;
     }
 
-    // todo: refactor this code block
+    @Override
+    protected void configureViewer(PagedViewer viewer) {
+        final ViewerConfigurationImpl.Paged configuration = viewer.getConfiguration();
+
+        configuration.border(
+            Border.of(2, 1, 1, 1)
+        );
+    }
 
     @Override
     protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
+        // todo: refactor this code block
+
         final List<InventoryItemSupplier> items = new LinkedList<>();
 
         final Player player = viewer.getPlayer();
@@ -77,27 +90,34 @@ public final class SpawnerShopView extends PagedInventory {
 
                             final String formattedPrice = NumberFormatter.letterFormat(cost);
 
-                            final String coinsPrice = discount == null
+                            String coinsPrice = discount == null
                                 ? formattedPrice
                                 : ColorUtil.colored("&c&m" + formattedPrice + "&r" + "&a " + NumberFormatter.letterFormat(
                                 discountManager.getSpawnerPriceWithDiscount(cost, discount.getValue())
                             ));
 
+                            if (cost == 0) coinsPrice = "";
+
                             final String formattedCashPrice = NumberFormatter.letterFormat(cashCost);
 
-                            final String cashPrice = discount == null
+                            String cashPrice = discount == null
                                 ? formattedCashPrice
                                 : ColorUtil.colored("&c&m" + formattedCashPrice + "&r" + "&6 " + NumberFormatter.letterFormat(
                                 discountManager.getSpawnerPriceWithDiscount(cashCost, discount.getValue())
                             ));
 
+                            if (cashCost == 0) cashPrice = "";
+
                             final String discountLine = discount == null
                                 ? ChatColor.RED + "Você não possui nenhum desconto."
                                 : NumberFormatter.decimalFormat(discount.getValue()) + "% - " + ColorUtil.colored(discount.getGroupName());
 
+                            final String finalCoinsPrice = coinsPrice;
+                            final String finalCashPrice = cashPrice;
+
                             final List<String> replacedLore = lore.stream()
-                                .map(s -> s.replace("{coins}", coinsPrice))
-                                .map(s -> s.replace("{cash}", cashPrice))
+                                .map(s -> s.replace("{coins}", finalCoinsPrice))
+                                .map(s -> s.replace("{cash}", finalCashPrice))
                                 .map(s -> s.replace("{discount}", discountLine))
                                 .collect(Collectors.toList());
 
@@ -126,6 +146,12 @@ public final class SpawnerShopView extends PagedInventory {
                             final double finalCost = discount == null
                                 ? cost
                                 : discountManager.getSpawnerPriceWithDiscount(cost, discount.getValue());
+
+                            // todo: apply cash cost to spawner amount
+
+                            final double finalCashCost = discount == null
+                                ? cashCost
+                                : discountManager.getSpawnerPriceWithDiscount(cashCost, discount.getValue());
 
                             final double balance = economyHook.getBalance(player);
 
