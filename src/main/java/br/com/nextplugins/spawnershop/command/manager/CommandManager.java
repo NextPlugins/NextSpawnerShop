@@ -31,7 +31,8 @@ public final class CommandManager {
                 plugin.getEconomyHook()
             ),
             new SpawnerAdminCommand(
-                plugin.getConfigurationManager()
+                plugin.getConfigurationManager(),
+                plugin.getUserStorage()
             )
         );
     }

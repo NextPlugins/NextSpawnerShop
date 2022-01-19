@@ -16,11 +16,12 @@ public final class UserRepository {
     private final SQLExecutor executor;
 
     public void createTable() {
-        executor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
-            "player VARCHAR(16) NOT NULL PRIMARY KEY," +
-            "limit DOUBLE NOT NULL DEFAULT 0," +
-            "boughtSpawners DOUBLE NOT NULL DEFAULT 0" +
-            ");");
+        executor.updateQuery("CREATE TABLE IF NOT EXISTS `" + TABLE + "`(" +
+            "`player` VARCHAR(16) NOT NULL PRIMARY KEY," +
+            "`limit` DOUBLE NOT NULL DEFAULT 0," +
+            "`boughtSpawners` DOUBLE NOT NULL DEFAULT 0" +
+            ");"
+        );
     }
 
     public User selectOne(String query) {

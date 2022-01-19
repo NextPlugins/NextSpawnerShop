@@ -1,10 +1,12 @@
 package br.com.nextplugins.spawnershop.storage;
 
+import br.com.nextplugins.spawnershop.NextSpawnerShop;
 import br.com.nextplugins.spawnershop.api.model.user.User;
 import br.com.nextplugins.spawnershop.database.repository.UserRepository;
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.RemovalListener;
+import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.OfflinePlayer;
@@ -17,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public final class UserStorage {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Getter private final AsyncLoadingCache<String, User> cache = Caffeine.newBuilder()
         .maximumSize(1000)
@@ -27,6 +29,9 @@ public final class UserStorage {
         .buildAsync((key, executor) -> CompletableFuture.completedFuture(userRepository.selectOne(key)));
 
     public void init() {
+        final SQLExecutor sqlExecutor = NextSpawnerShop.getInstance().getSqlExecutor();
+
+        userRepository = new UserRepository(sqlExecutor);
         userRepository.createTable();
     }
 

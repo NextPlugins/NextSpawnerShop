@@ -16,8 +16,16 @@ public final class User {
         this.boughtSpawners += value;
     }
 
+    public void decreaseBoughtSpawners(double value) {
+        this.boughtSpawners -= value;
+    }
+
     public void increaseLimit(double value) {
         this.limit += value;
+    }
+
+    public void decreaseLimit(double value) {
+        this.limit -= value;
     }
 
     public boolean hasLimit(double value) {

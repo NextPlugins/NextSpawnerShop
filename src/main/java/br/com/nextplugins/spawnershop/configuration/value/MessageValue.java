@@ -23,6 +23,23 @@ public final class MessageValue {
     private final Configuration configuration = NextSpawnerShop.getInstance().getConfigurationManager().getMessagesConfiguration();
 
     private final List<String> staffCommandHelp = messageList("messages.staff-help");
+    private final List<String> limitCommandHelp = messageList("messages.limit-help");
+
+    // limit
+
+    private final String viewAmount = message("messages.limit.view");
+    private final String giveAmount = message("messages.limit.give");
+    private final String setAmount = message("messages.limit.set");
+    private final String removeAmount = message("messages.limit.remove");
+    private final String resetAmount = message("messages.limit.reset");
+    private final String giveTargetAmount = message("messages.limit.give-target");
+    private final String setTargetAmount = message("messages.limit.set-target");
+    private final String removeTargetAmount = message("messages.limit.remove-target");
+    private final String resetTargetAmount = message("messages.limit.reset-target");
+    private final String wrongAmount = message("messages.limit.wrong-amount");
+    private final String consoleNotAllowed = message("messages.limit.console-not-allowed");
+
+    // command
 
     private final String noPermission = message("messages.commands.no-permission");
     private final String executionError = message("messages.commands.execution-error");

@@ -43,7 +43,8 @@ public final class NextSpawnerShop extends JavaPlugin {
             spawnerManager.init();
 
             userRepository = new UserRepository(sqlExecutor);
-            userStorage = new UserStorage(userRepository);
+            userStorage = new UserStorage();
+            userStorage.init();
 
             economyHook.init();
 
